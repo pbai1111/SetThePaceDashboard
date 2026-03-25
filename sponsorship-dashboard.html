@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Set the Pace — Partner Dashboard and Planning Calendar</title>
+<style>
+  :root {
+    --navy: #1a2744;
+    --blue: #2d5fa6;
+    --light-blue: #e8f0fe;
+    --orange: #f47920;
+    --green: #2ea44f;
+    --yellow: #f5c542;
+    --red: #d73a49;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-900);
+    line-height: 1.5;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--navy);
+    color: var(--white);
+    padding: 28px 40px 24px;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .header h1 span { color: var(--orange); }
+  .header-meta {
+    font-size: 13px;
+    color: rgba(255,255,255,1);
+  }
+  .header-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    margin-top: 2px;
+  }
+
+  /* CHANGES BANNER */
+  .changes-banner {
+    background: linear-gradient(135deg, #fff8ed 0%, #fff3e0 100%);
+    border-left: 4px solid var(--orange);
+    margin: 20px 40px 0;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+  }
+  .changes-banner h3 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--orange);
+    margin-bottom: 8px;
+  }
+  .changes-banner ul {
+    list-style: none;
+    padding: 0;
+  }
+  .changes-banner li {
+    font-size: 14px;
+    color: var(--gray-700);
+    padding: 3px 0;
+    padding-left: 18px;
+    position: relative;
+  }
+  .changes-banner li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--orange);
+    font-weight: 600;
+  }
+
+  /* MAIN CONTENT */
+  .content { padding: 24px 40px 60px; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--gray-200);
+    padding-bottom: 0;
+  }
+  .tab {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-400);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.15s;
+    background: none;
+    border-top: none; border-left: none; border-right: none;
+  }
+  .tab:hover { color: var(--gray-700); }
+  .tab.active {
+    color: var(--blue);
+    border-bottom-color: var(--blue);
+  }
+
+  /* FILTERS */
+  .filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gray-400);
+    margin-right: 4px;
+  }
+  .filter-btn {
+    padding: 6px 14px;
+    font-size: 13px;
+    border: 1px solid var(--gray-200);
+    border-radius: 20px;
+    background: var(--white);
+    color: var(--gray-500);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-weight: 500;
+  }
+  .filter-btn:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+  .filter-btn.active {
+    background: var(--blue);
+    color: var(--white);
+    border-color: var(--blue);
+  }
+
+  /* PARTNER DROPDOWN */
+  .filter-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .aired-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 6px;
+  }
+  .aired-toggle label {
+    font-size: 13px;
+    color: var(--green);
+    cursor: pointer;
+    font-weight: 600;
+    user-select: none;
+  }
+  .toggle-switch {
+    position: relative;
+    width: 36px;
+    height: 20px;
+    cursor: pointer;
+  }
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: var(--gray-200);
+    border-radius: 20px;
+    transition: 0.2s;
+  }
+  .toggle-slider::before {
+    content: '';
+    position: absolute;
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.2s;
+  }
+  .toggle-switch input:checked + .toggle-slider {
+    background: var(--green);
+  }
+  .toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(16px);
+  }
+  .aired-row {
+    background: #f0fdf4 !important;
+  }
+  .aired-row:hover {
+    background: #dcfce7 !important;
+  }
+
+  .partner-select {
+    padding: 6px 32px 6px 14px;
+    font-size: 13px;
+    border: 1px solid var(--gray-200);
+    border-radius: 20px;
+    background: var(--white);
+    color: var(--gray-500);
+    cursor: pointer;
+    font-weight: 500;
+    font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239ca3af' d='M3 4.5L6 8l3-3.5H3z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    transition: all 0.15s;
+  }
+  .partner-select:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+  .partner-select:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 2px rgba(45,95,166,0.15);
+  }
+  .partner-select.active {
+    background-color: var(--blue);
+    color: var(--white);
+    border-color: var(--blue);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M3 4.5L6 8l3-3.5H3z'/%3E%3C/svg%3E");
+  }
+  .filter-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--gray-200);
+    margin: 0 4px;
+  }
+
+  /* TAB PANELS */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* EPISODE TABLE */
+  .episode-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .episode-table thead {
+    background: var(--gray-50);
+  }
+  .episode-table th {
+    padding: 12px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gray-400);
+    text-align: left;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .episode-table td {
+    padding: 14px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: top;
+  }
+  .episode-table tbody tr:hover {
+    background: var(--light-blue);
+  }
+  .episode-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .episode-table tbody tr.livestream-row {
+    background: #f5f0ff;
+  }
+  .episode-table tbody tr.livestream-row:hover {
+    background: #ede5ff;
+  }
+  .episode-table tbody tr.live-audience-row {
+    background: #fff8f0;
+  }
+  .episode-table tbody tr.live-audience-row:hover {
+    background: #fff0e0;
+  }
+
+  /* BADGES */
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .badge-livestream {
+    background: #7c3aed;
+    color: var(--white);
+  }
+  .badge-live-audience {
+    background: var(--orange);
+    color: var(--white);
+  }
+  .badge-studio {
+    background: var(--gray-100);
+    color: var(--gray-400);
+    font-weight: 500;
+  }
+
+  /* STATUS DOTS */
+  .status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    position: relative;
+    top: -1px;
+  }
+  .status-aired { background: var(--green); }
+  .status-scheduled { background: var(--blue); }
+  .status-not-started { background: var(--yellow); }
+  .status-tbd { background: var(--gray-300); }
+
+  /* SPONSOR TAGS */
+  .sponsor-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 2px 3px 2px 0;
+    white-space: nowrap;
+  }
+  .sponsor-peloton { background: #1a1a1a; color: #fff; }
+  .sponsor-volvo { background: #e8e8e8; color: #333; }
+  .sponsor-mastercard { background: #ff5f00; color: #fff; }
+  .sponsor-cookunity { background: #f5c542; color: #333; }
+  .sponsor-shakeshack { background: #2ea44f; color: #fff; }
+  .sponsor-maybelline { background: #d73a49; color: #fff; }
+  .sponsor-tagheur { background: #2d5fa6; color: #fff; }
+  .sponsor-getyourguide { background: #8B5E3C; color: #fff; }
+  .sponsor-culligan { background: #4da6d9; color: #fff; }
+  .sponsor-newbalance { background: #cf0a2c; color: #fff; }
+  .sponsor-snyders { background: #7c5295; color: #fff; }
+  .sponsor-maurten { background: #c8102e; color: #fff; }
+  .sponsor-shockz { background: #00a5b5; color: #fff; }
+  .sponsor-hss { background: #003da5; color: #fff; }
+  .sponsor-none { background: var(--gray-100); color: var(--gray-400); font-weight: 400; font-style: italic;}
+  .sponsor-unconfirmed {
+    opacity: 0.6;
+    border: 1.5px dashed currentColor;
+    position: relative;
+  }
+  .nc-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--yellow);
+    color: var(--gray-700);
+    margin-left: 4px;
+    letter-spacing: 0.3px;
+  }
+  .partner-info {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--gray-200);
+    font-size: 13px;
+    color: var(--gray-700);
+    line-height: 1.6;
+  }
+  .partner-info-label {
+    font-weight: 600;
+    color: var(--gray-500);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .partner-info-row {
+    margin-bottom: 6px;
+  }
+  .asset-badge {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--gray-100);
+    color: var(--gray-500);
+    margin-left: 6px;
+  }
+  .weekly-badge {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #1a1a1a;
+    color: #fff;
+    letter-spacing: 0.3px;
+  }
+
+  .ep-title {
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 2px;
+  }
+  .ep-desc {
+    font-size: 13px;
+    color: var(--gray-500);
+    max-width: 340px;
+  }
+  .ep-notes {
+    font-size: 12px;
+    color: var(--orange);
+    font-weight: 500;
+    margin-top: 3px;
+  }
+  .ep-guest {
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .ep-member {
+    font-size: 13px;
+    color: var(--gray-500);
+    margin-top: 2px;
+  }
+  .ep-date {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .ep-date .day {
+    font-weight: 600;
+    color: var(--gray-900);
+  }
+
+  /* FULFILLMENT SECTION */
+  .fulfillment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .fulfillment-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .fulfillment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .fulfillment-brand {
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .fulfillment-count {
+    font-size: 14px;
+    color: var(--gray-500);
+  }
+  .fulfillment-count strong {
+    color: var(--gray-900);
+  }
+  .progress-bar {
+    height: 10px;
+    background: var(--gray-100);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.4s ease;
+  }
+  .progress-green { background: var(--green); }
+  .progress-yellow { background: var(--yellow); }
+  .progress-red { background: var(--red); }
+  .fulfillment-details {
+    font-size: 12px;
+    color: var(--gray-400);
+  }
+  .fulfillment-episodes {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--gray-100);
+  }
+  .fulfillment-episodes .ep-mini {
+    font-size: 12px;
+    color: var(--gray-500);
+    padding: 2px 0;
+  }
+  .fulfillment-episodes .ep-mini strong {
+    color: var(--gray-700);
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 16px;
+  }
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--gray-400);
+    margin-bottom: 20px;
+    margin-top: -10px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--gray-400);
+    font-style: italic;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--white);
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+  }
+  .legend-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gray-400);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--gray-500);
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+
+  @media (max-width: 768px) {
+    .header, .content, .changes-banner { padding-left: 20px; padding-right: 20px; }
+    .episode-table { font-size: 13px; }
+    .episode-table th, .episode-table td { padding: 10px 10px; }
+    .fulfillment-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ========== CALENDAR PLANNER TAB STYLES ========== */
+  #tab-calendar .cal-container { max-width: 960px; margin: 0 auto; }
+  #tab-calendar .cal-top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  #tab-calendar .cal-top-header h2 { font-size: 20px; font-weight: 700; color: var(--gray-900); }
+  #tab-calendar .cal-subtitle { font-size: 12px; color: var(--gray-500); margin-bottom: 12px; }
+  #tab-calendar .cal-btn { padding: 3px 10px; border: 1px solid var(--gray-300); border-radius: 4px; background: white; cursor: pointer; font-size: 11px; color: var(--gray-700); }
+  #tab-calendar .cal-btn:hover { background: var(--gray-100); }
+  #tab-calendar .cal-btn-active { background: #eff6ff; }
+  #tab-calendar .cal-btn-reset { border-color: #fecaca; background: #fff5f5; color: #991b1b; }
+  #tab-calendar .cal-btn-primary { border: none; background: #2563eb; color: white; font-weight: 600; }
+  #tab-calendar .cal-panel { margin-top: 8px; padding: 10px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 6px; }
+  #tab-calendar .cal-legend { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+  #tab-calendar .cal-legend-pill { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; display: inline-block; }
+  #tab-calendar .cal-legend-pill.clickable { cursor: pointer; }
+  #tab-calendar .cal-stats { font-size: 11px; color: #555; margin-bottom: 6px; }
+  #tab-calendar .cal-type-detail { margin-top: 6px; padding: 10px; background: var(--gray-50); border: 2px solid; border-radius: 6px; }
+  #tab-calendar .cal-type-detail-item { display: flex; gap: 8px; align-items: baseline; font-size: 12px; padding: 3px 6px; background: white; border-left: 4px solid #f97316; border-radius: 3px; margin-bottom: 3px; }
+  #tab-calendar .cal-type-detail-date { font-weight: 600; color: var(--gray-700); min-width: 52px; }
+  #tab-calendar .cal-month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  #tab-calendar .cal-month-nav button { padding: 4px 12px; border: 1px solid var(--gray-300); border-radius: 5px; background: white; cursor: pointer; font-size: 13px; }
+  #tab-calendar .cal-month-nav button:disabled { background: var(--gray-100); cursor: default; }
+  #tab-calendar .cal-month-title { font-size: 18px; font-weight: 700; text-align: center; }
+  #tab-calendar .cal-month-ep-count { font-size: 12px; color: var(--gray-500); font-weight: 500; text-align: center; }
+  #tab-calendar .cal-month-tabs { display: flex; gap: 2px; margin-bottom: 10px; flex-wrap: wrap; }
+  #tab-calendar .cal-month-tab { padding: 3px 8px; border: 1px solid var(--gray-300); border-radius: 4px; background: white; cursor: pointer; font-size: 11px; color: var(--gray-700); }
+  #tab-calendar .cal-month-tab.active { border: 2px solid #2563eb; background: #eff6ff; font-weight: 700; color: #2563eb; }
+  #tab-calendar .cal-grid { border: 1px solid var(--gray-200); border-radius: 8px; overflow: hidden; }
+  #tab-calendar .cal-grid-header { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid var(--gray-200); }
+  #tab-calendar .cal-grid-header div { padding: 6px; font-size: 11px; font-weight: 600; color: var(--gray-500); text-align: center; background: var(--gray-50); }
+  #tab-calendar .cal-week { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid var(--gray-200); }
+  #tab-calendar .cal-week:last-child { border-bottom: none; }
+  #tab-calendar .cal-day { min-height: 100px; padding: 3px; border-right: 1px solid #f0f0f0; position: relative; overflow: hidden; }
+  #tab-calendar .cal-day:last-child { border-right: none; }
+  #tab-calendar .cal-day.empty { background: #fafafa; }
+  #tab-calendar .cal-day.drag-over { background: #eff6ff; }
+  #tab-calendar .cal-day-num { font-size: 11px; font-weight: 500; color: var(--gray-700); margin-bottom: 2px; }
+  #tab-calendar .cal-pill { font-size: 10px; line-height: 1.35; padding: 2px 14px 2px 4px; margin-bottom: 2px; border-radius: 3px; cursor: grab; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; position: relative; }
+  #tab-calendar .cal-pill .cal-pill-type { font-weight: 700; margin-right: 3px; }
+  #tab-calendar .cal-pill .cal-pill-delete { position: absolute; right: 2px; top: 1px; cursor: pointer; opacity: 0.5; font-size: 10px; }
+  #tab-calendar .cal-pill .cal-pill-delete:hover { opacity: 1; }
+  #tab-calendar .cal-month-summary { margin-top: 10px; font-size: 12px; color: #555; }
+  #tab-calendar .cal-warning { margin-top: 10px; padding: 8px 12px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; font-size: 12px; color: #991b1b; }
+  #tab-calendar .cal-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+  #tab-calendar .cal-modal, .cal-modal-overlay .cal-modal { background: white; border-radius: 8px; padding: 20px; width: 380px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+  .cal-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+  .cal-modal-overlay .cal-modal { background: white; border-radius: 8px; padding: 20px; width: 380px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+  .cal-modal h3 { margin: 0 0 12px; font-size: 15px; }
+  .cal-modal label { font-size: 12px; font-weight: 600; color: #555; display: block; margin-bottom: 4px; }
+  .cal-modal input, .cal-modal select { width: 100%; padding: 7px 10px; border: 1px solid var(--gray-300); border-radius: 5px; font-size: 13px; box-sizing: border-box; }
+  .cal-modal .cal-field { margin-bottom: 10px; }
+  .cal-modal .cal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>Set the Pace <span>Partner Dashboard and Planning Calendar</span></h1>
+      <div class="header-sub">New York Road Runners — Podcast Partner Overview</div>
+    </div>
+    <div class="header-meta">
+      Last updated: Mar 12, 2026 at 02:00 PM ET<br>
+      Source: <a href="https://docs.google.com/spreadsheets/d/14tOnUwPcO30TGWJCKD5BzaJ_nmmtO-YoCG6raOQitYY/edit" target="_blank" style="color:rgba(255,255,255,1);text-decoration:underline">Project Management Master (Google Sheets)</a>
+    </div>
+  </div>
+</div>
+
+<div class="changes-banner">
+  <h3>Recent Changes — Feb 25, 2026</h3>
+  <ul>
+    <li>Livestream events: <strong>Ep 158</strong>, <strong>Ep 173</strong>, <strong>Ep 187</strong>, and 2 more</li>
+    <li>Live audience episodes: <strong>Ep 164</strong>, <strong>Ep 188</strong>, <strong>Ep 193</strong>, and 1 more</li>
+    <li>Peloton ads placed on 29 of 29 episodes — remaining partners pending 2026 scheduling</li>
+  </ul>
+</div>
+
+<div class="content">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('schedule')">Episode Schedule</button>
+    <button class="tab" onclick="switchTab('fulfillment')">Partner Fulfillment</button>
+    <button class="tab" onclick="switchTab('calendar')">Calendar Planner</button>
+  </div>
+
+  <!-- SCHEDULE TAB -->
+  <div id="tab-schedule" class="tab-panel active">
+
+    <div class="filter-row">
+      <div class="filter-group">
+        <span class="filter-label">Show:</span>
+        <button class="filter-btn active" onclick="filterEpisodes('all', this)">All Episodes</button>
+        <button class="filter-btn" onclick="filterEpisodes('live', this)">Live Only (All)</button>
+        <button class="filter-btn" onclick="filterEpisodes('livestream', this)">Livestream</button>
+        <button class="filter-btn" onclick="filterEpisodes('live-audience', this)">Live Audience</button>
+        <button class="filter-btn" onclick="filterEpisodes('sponsored', this)">With Ads Placed</button>
+        <button class="filter-btn" onclick="filterEpisodes('needs-ads', this)">Needs Ad Placement</button>
+      </div>
+      <div class="filter-divider"></div>
+      <div class="filter-group">
+        <span class="filter-label">Partner:</span>
+        <select id="partner-filter" class="partner-select" onchange="filterByPartner(this)">
+          <option value="">All Partners</option>
+        </select>
+      </div>
+      <div class="filter-divider"></div>
+      <div class="aired-toggle">
+        <label class="toggle-switch">
+          <input type="checkbox" id="show-aired-toggle" onchange="toggleAired()">
+          <span class="toggle-slider"></span>
+        </label>
+        <label for="show-aired-toggle">Show aired episodes</label>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span class="legend-title">Key:</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#7c3aed"></span> Livestream</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--orange)"></span> Live Audience</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--green)"></span> Aired</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--blue)"></span> Scheduled</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--yellow)"></span> Not Started</span>
+    </div>
+
+    <table class="episode-table">
+      <thead>
+        <tr>
+          <th style="width:50px">Ep</th>
+          <th style="width:90px">Air Date</th>
+          <th style="width:90px">Record Date</th>
+          <th>Format</th>
+          <th style="min-width:260px">Episode / Theme</th>
+          <th style="min-width:150px">Guest</th>
+          <th style="min-width:160px">Ad Placements</th>
+        </tr>
+      </thead>
+      <tbody id="episode-body">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FULFILLMENT TAB -->
+  <div id="tab-fulfillment" class="tab-panel">
+    <h2 class="section-title">Partner Fulfillment Tracker — Spring 2026</h2>
+    <p class="section-subtitle">Contract inclusion counts are placeholder — update with actual contract numbers when available.</p>
+
+    <div class="fulfillment-grid" id="fulfillment-grid">
+    </div>
+  </div>
+
+  <!-- CALENDAR PLANNER TAB -->
+  <div id="tab-calendar" class="tab-panel">
+    <div class="cal-container" id="cal-app"></div>
+  </div>
+</div>
+
+<script>
+// ============================================
+// DATA — This is what gets regenerated from the master
+// ============================================
+const LAST_UPDATED = "February 12, 2026";
+
+const episodes = [
+  {ep:155,status:'aired',format:'',record:'2026-02-24',air:'2026-02-26',title:'The Vital Importance of Safety for Women Runners',desc:'This episode discusses sexual violence, which may be triggering or distressing for some listeners.  In this episode, New York Road Runners leaders Christine Burke and Erica Edwards-O’Neal explore runner safety—particularly for women—through global and local lenses. Reflecting on a recent trip to Kenya, they share their experience meeting with Tirop’s Angels, an organization that combats gender-based violence. Christine and Erica then interview Jean Knaack, CEO of the Road Runners Club of America, who discusses the need for a systemic approach to safety in running clubs, emphasizing proactive leadership, clear codes of conduct, and shared responsibility—particularly encouraging men to understand the distinct safety concerns women face. A second conversation spotlights Ashley Raymond and Meagan Doyle, co-founders of Safely, a company that makes safety products including the Sidekick, a compact, five-in-one self-defense tool designed with runners in mind. While acknowledging women shouldn’t bear the burden of protection, they advocate preparedness, education, and practical tools to help women feel confident and secure.   FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'Jean Knaak - CEO of Road Runners Club of America - on women\'s safetyAshley and Meaghan  - cofounders of Safely',sponsors:['Peloton']},
+  {ep:156,status:'aired',format:'',record:'2026-03-03',air:'2026-03-05',title:'Everything You Need to Know about the United Airlines NYC Half',desc:'New York Road Runners’ Chief Event Production Officer and Race Director, Ted Metellus, joins  Becs to talk all things United Airlines NYC Half. This year’s race is set for Sunday, March 15, and Ted has all the answers to questions about race week and race day. Learn the deets about bib pickup at the Expo (in a new location at the Javits Center!), getting to the start, navigating the iconic course from the Brooklyn Museum to Central Park—including crossing the Brooklyn Bridge again this year—managing post-race reunion, and more. Whether you’re running, spectating, or tuning in, you’ll be well-prepared.    FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'Ted Metellus',sponsors:['Peloton']},
+  {ep:157,status:'aired',format:'',record:'2026-03-10',air:'2026-03-12',title:'From the News Desk to the Start Line: ABC’s Liz Cho and Mike Marza Take on the United Airlines NYC Half',desc:'Joining Rob and Becs this week are Liz Cho and Mike Marza, anchors for ABC7 Eyewitness News. Together, they report on the events that shape daily life across the five boroughs. There will be more than 30,000 stories at this weekend’s United Airlines NYC Half—the kind of stories today’s guests usually spend their days telling. But this weekend, instead of covering the stories, they’ll be part of the action as they step away from the newsroom to take on 13.1 miles. Liz was part of the ABC relay at the 2025 TCS New York City Marathon, which she followed up with running the NYRR Midnight Run, and Mike ran the TCS New York City Marathon for the first time in 2025. They talk about the excitement of running in New York City and what they’re most looking forward to on race day.   FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'Liz Cho and Mike Marza',sponsors:['Peloton']},
+  {ep:158,status:'aired',format:'Livestream',record:'2025-03-15',air:'2026-03-15',title:'How the 2026 United Airlines NYC Half Champions Conquered the Course',desc:'In this special race-day episode of Set the Pace, hosts Olympian Carrie Tollefson and CITIUS MAG\'s Kyle Merber interview the 2026 United Airlines NYC Half champions—Eden Rainbow-Cooper, Daniel Romanchuk, Hellen Obiri, Adriaan Wildschutt, and Daniel Mata—who led more than 30,000 athletes from the start in Prospect Park, across the Brooklyn Bridge, through Manhattan, and to the finish in Central Park. FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'champs: Daniel romanchuk Eden Rainbow-Cooper Adriaan Wildschuut Hellen Obiri',sponsors:['Peloton']},
+  {ep:159,status:'aired',format:'',record:'TBD',air:'2026-03-19',title:'Life After the NFL: Justin Britt Tackles the United Airlines NYC Half',desc:'Former NFL center Justin Britt, who spent most of his career with the Seattle Seahawks, joins Rob and Becs on Set the Pace this week. Justin ran the United Airlines NYC Half in 1:31:11, coached by professional distance runner Emily Venters, who finished the race in 1:09:46, placing 10th in the women’s field. For Justin, running has helped him navigate a rocky transition to life after the NFL. For Emily, coaching is a way to give back to the running community. The conversation explores the unlikely partnership between an NFL veteran learning from a young professional runner, what it’s like to tackle tough training, and how running motivates athletes at different stages of their lives.   FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'Justin Britt and Emily Venters',sponsors:['Peloton']},
+  {ep:160,status:'upcoming',format:'',record:'2026-03-24',air:'2026-03-26',title:'Mary Wittenberg- Leadership, Legacy, and Leveling the Running Playing Field',desc:'Mary Wittenberg, former New York Road Runners President and CEO, joins Set the Pace this week as part of our celebration of Women’s History Month. After becoming a partner at a law firm in New York City, she pivoted to pursue her passion for sports, joining New York Road Runners in 1998. A dedicated runner, she won the 1987 Marine Corps Marathon and competed in the 1988 U.S. Olympic Marathon Trials. During her tenure, Mary guided NYRR and the New York City Marathon through a decade of significant growth and in 2002 was part of a pivotal decision to introduce a women-only professional start ahead of the men, giving them more visibility with the spectators and news media. In recognition of Women’s History Month, Mary reflects on the continued need for greater equity in sports, noting that while progress has been made, there is still more work to do to ensure equal opportunities for women on the playing field.  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'Mary Wittenberg',sponsors:['Peloton']},
+  {ep:161,status:'upcoming',format:'',record:'2026-03-31',air:'2026-04-02',title:'Short Preview of Programming Changes',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:163,status:'upcoming',format:'Live Audience',record:'2026-04-18',air:'2026-04-18',title:'Live from the New Balance Relay at the Boston Marathon',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'Rob, Meb, (Becs? Pending NB) and many special guests',sponsors:['Peloton']},
+  {ep:164,status:'upcoming',format:'',record:'2026-04-21',air:'2026-04-23',title:'Evertything You Need to Know about the RBC Brooklyn Half   +Meb Minute w/HSS',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','Snyders (NC)','HSS']},
+  {ep:162,status:'upcoming',format:'',record:'TBD',air:'2026-04-30',title:'Behind the Scenes - Kenya Roundtable',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'Rob, Becs, Dorian and 3 other members of NYRR Team who went to Kenya',sponsors:['Peloton']},
+  {ep:165,status:'upcoming',format:'',record:'2026-05-05',air:'2026-05-07',title:'Single Story - Mental Health Focused - maybe Peloton partnership',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'MAY move to later in the month - May be a Peloton partnership story',sponsors:['Peloton']},
+  {ep:166,status:'upcoming',format:'Live Audience',record:'2026-05-16',air:'2026-05-16',title:'RBC Brooklyn Half Live Show   +Meb Minute w/HSS',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','Shockz (NC)','HSS']},
+  {ep:167,status:'upcoming',format:'',record:'2026-05-19',air:'2026-05-21',title:'Becs Preview - Summer Racing Challenge  +Meb Minute w/HSS',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','HSS']},
+  {ep:168,status:'upcoming',format:'Livestream',record:'2026-06-06',air:'2026-06-06',title:'Mini 10K Live Stream With Champs',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','Mastercard (NC)']},
+  {ep:169,status:'upcoming',format:'',record:'TBD',air:'2026-06-11',title:'Story Arc - NYRR HIstory TBD Ep 1',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:170,status:'upcoming',format:'',record:'TBD',air:'2026-06-18',title:'Story Arc - NYRR HIstory TBD Ep 2',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:171,status:'upcoming',format:'',record:'TBD',air:'2026-06-25',title:'Story Arc - Jorney to the start Ep 1 - TBD (no Morgxn)  +Meb Minute w/HSS',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','HSS']},
+  {ep:172,status:'upcoming',format:'',record:'TBD',air:'2026-07-02',title:'Story Arc - Jorney to the start - Ep 2 - TBD (no Morgxn)',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:173,status:'upcoming',format:'',record:'2026-07-07',air:'2026-07-09',title:'STU - For Members - July Edition',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:174,status:'upcoming',format:'',record:'2026-07-14',air:'2026-07-16',title:'BTS - Roundtable - Health Suummer running - Culligan,Peloton, HSS   +Meb Minute w/HSS',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'Culligan HSS Peloton',sponsors:['Peloton','HSS']},
+  {ep:175,status:'upcoming',format:'',record:'2026-07-28',air:'2026-07-30',title:'Single Story - Runner champion Narrative',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'TBD - maybe UANYC Half champ',sponsors:['Peloton']},
+  {ep:176,status:'upcoming',format:'',record:'TBD',air:'2026-08-06',title:'BTS - HSS  (Matt James)',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'Matt James? we\'d love to do a BTS story with an HSS client',sponsors:['Peloton','HSS']},
+  {ep:177,status:'upcoming',format:'',record:'2026-08-11',air:'2026-08-13',title:'Single Story - Ultra Running Story- William Goodge? -',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'Ultra runner who ran across australia - would air before Becs  run and before Sydney Marathon',sponsors:['Peloton']},
+  {ep:178,status:'upcoming',format:'',record:'2026-08-25',air:'2026-08-27',title:'Single Story - Viola Cheptoo  +Meb Minute w/HSS',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','HSS']},
+  {ep:179,status:'upcoming',format:'',record:'2026-09-01',air:'2026-09-03',title:'TBD - Pre Marathon',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:180,status:'upcoming',format:'',record:'TBD',air:'2026-09-10',title:'SS- Becs tells story of her August Race  +Meb Minute w/HSS',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','HSS']},
+  {ep:181,status:'upcoming',format:'Livestream',record:'2026-09-13',air:'2026-09-13',title:'FAM Champs live show - youtube',desc:'',guest:'',sponsors:['Peloton']},
+  {ep:182,status:'upcoming',format:'',record:'TBD',air:'2026-09-17',title:'Story Arc - 5 Borough',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:183,status:'upcoming',format:'',record:'TBD',air:'2026-09-24',title:'Story Arc - 5 Borough   +Meb Minute w/HSS',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','HSS']},
+  {ep:184,status:'upcoming',format:'',record:'TBD',air:'2026-10-01',title:'Story Arc - 5 Borough',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:185,status:'upcoming',format:'',record:'TBD',air:'2026-10-08',title:'Story Arc - 5 Borough',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:186,status:'upcoming',format:'',record:'2026-10-13',air:'2026-10-15',title:'EVYNTK- 2026 TCS NYC Marathon  +Meb Minute w/HSS',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'Ted Metellus',sponsors:['Peloton','HSS']},
+  {ep:187,status:'upcoming',format:'',record:'2026-10-20',air:'2026-10-22',title:'TBD - Pre Marathon',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:188,status:'upcoming',format:'Live Audience',record:'Expo Date TBD',air:'2026-10-29',title:'Live from the Expo',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:189,status:'upcoming',format:'Livestream',record:'2026-10-31',air:'2026-10-31',title:'Abbot champs Live Show & watch party',desc:'',guest:'',sponsors:['Peloton']},
+  {ep:190,status:'upcoming',format:'Livestream',record:'2026-11-01',air:'2026-11-01',title:'Marathon Champs Live show',desc:'',guest:'',sponsors:['Peloton']},
+  {ep:191,status:'upcoming',format:'',record:'2026-11-03',air:'2026-11-05',title:'TBD- Post Marathon Story',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:192,status:'upcoming',format:'',record:'2026-11-10',air:'2026-11-12',title:'STU - NYRR Members - November Edition',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:193,status:'upcoming',format:'',record:'2026-11-17',air:'2026-11-19',title:'TBD- Post Marathon  +Meb Minute w/HSS',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','HSS']},
+  {ep:194,status:'upcoming',format:'',record:'2026-11-24',air:'2026-11-26',title:'TBD- Post Marathon',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:195,status:'upcoming',format:'',record:'2026-12-01',air:'2026-12-03',title:'',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:196,status:'upcoming',format:'',record:'2026-12-08',air:'2026-12-10',title:'',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:197,status:'upcoming',format:'',record:'2026-12-15',air:'2026-12-17',title:'TBD  +Meb Minute w/HSS',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','HSS']},
+  {ep:198,status:'upcoming',format:'',record:'2026-12-22',air:'2026-12-24',title:'',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:199,status:'upcoming',format:'',record:'2026-12-29',air:'2026-12-31',title:'',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']}
+];
+
+// Partner contracts
+const contracts = [
+  {brand:'2025',contracted:0,placed:0,asset:'',notes:'',priorities:'',themes:'',suggestedPlacements:'',episodes:[]},
+  {brand:'Peloton',contracted:'Every ep',placed:0,asset:'',notes:'Ongoing partner — included in every episode',priorities:'',themes:'',suggestedPlacements:'',episodes:[]},
+  {brand:'Volvo',contracted:6,placed:1,asset:'',notes:'FAM, Abbott Dash, TCSNYCM',priorities:'',themes:'',suggestedPlacements:'',episodes:[{ep:190,date:'Nov 01',title:'Marathon Champs Live show',nc:false}]},
+  {brand:'Mastercard',contracted:2,placed:0,asset:'',notes:'FAM, NYRR Staten Island Half',priorities:'',themes:'',suggestedPlacements:'',episodes:[]},
+  {brand:'Cook Unity',contracted:5,placed:0,asset:'',notes:'Note: Over-delivered by 1 (became two separate episodes)',priorities:'',themes:'',suggestedPlacements:'',episodes:[]},
+  {brand:'Shake Shack',contracted:2,placed:0,asset:'',notes:'Grete\'s Gallop, Marathon wrap up',priorities:'',themes:'',suggestedPlacements:'',episodes:[]},
+  {brand:'Maybelline',contracted:2,placed:0,asset:'',notes:'5th Ave champs, Marathon/Cross Country',priorities:'',themes:'',suggestedPlacements:'',episodes:[]},
+  {brand:'Tag Heuer',contracted:2,placed:0,asset:'',notes:'FAM PRO Live show, TBD',priorities:'',themes:'',suggestedPlacements:'',episodes:[]},
+  {brand:'Get Your Guide',contracted:1,placed:0,asset:'',notes:'2 weeks before Dash/Marathon',priorities:'',themes:'',suggestedPlacements:'',episodes:[]},
+  {brand:'Culligan',contracted:3,placed:0,asset:'',notes:'Phil Keoghan, Alex Cora, End of Year',priorities:'',themes:'',suggestedPlacements:'',episodes:[]},
+  {brand:'Snyders',contracted:1,placed:0,asset:'',notes:'Midnight Run',priorities:'',themes:'',suggestedPlacements:'',episodes:[]},
+  {brand:'2026',contracted:0,placed:0,asset:'',notes:'',priorities:'Partner Priorities',themes:'Themes',suggestedPlacements:'Suggested Placements',episodes:[]},
+  {brand:'Peloton',contracted:'weekly',placed:0,asset:'',notes:'Placed through Ep 157. Contract count TBD.',priorities:'',themes:'',suggestedPlacements:'',episodes:[]},
+  {brand:'Volvo',contracted:6,placed:0,asset:'',notes:'',priorities:'marathon, UANYCH, BKH, Mini 10K, Pride*, FAM',themes:'',suggestedPlacements:'',episodes:[]},
+  {brand:'Mastercard',contracted:3,placed:1,asset:'',notes:'',priorities:'mini, marathon womens pro field',themes:'small business, teasing partners/campaigns',suggestedPlacements:'6/6 mini livestream w/ champs',episodes:[{ep:168,date:'Jun 06',title:'Mini 10K Live Stream With Champs',nc:true}]},
+  {brand:'Cook Unity',contracted:4,placed:0,asset:'',notes:'',priorities:'hold until Bronx 10M, marathon, grete\'s',themes:'tied to training and nutrition',suggestedPlacements:'',episodes:[]},
+  {brand:'Shake Shack',contracted:'TBD',placed:0,asset:'',notes:'',priorities:'',themes:'',suggestedPlacements:'',episodes:[]},
+  {brand:'Maybelline',contracted:3,placed:0,asset:'',notes:'',priorities:'women\'s half, mindful 5K',themes:'heat proof products, mental health (brace together)',suggestedPlacements:'',episodes:[]},
+  {brand:'Tag Heuer',contracted:0,placed:0,asset:'',notes:'',priorities:'',themes:'',suggestedPlacements:'',episodes:[]},
+  {brand:'Get Your Guide',contracted:9,placed:0,asset:'',notes:'',priorities:'june/july series, marathon key dates',themes:'',suggestedPlacements:'across calendar year',episodes:[]},
+  {brand:'Culligan',contracted:4,placed:0,asset:'',notes:'',priorities:'Earth Day/week/month (April 22), Climate week NYC (September 20-27), Green sports day (October 6), Joint initiative announcements (water monsters, water refill, etc.)',themes:'sustainability',suggestedPlacements:'* see note -->',episodes:[]},
+  {brand:'Snyders',contracted:1,placed:1,asset:'',notes:'',priorities:'national pretzel day (april 26), marathon',themes:'',suggestedPlacements:'',episodes:[{ep:164,date:'Apr 23',title:'Evertything You Need to Know about the RBC Brooklyn Half   +Meb Minute w/HSS',nc:true}]},
+  {brand:'Maurten',contracted:1,placed:0,asset:'',notes:'',priorities:'races tied to gel depos, marathon',themes:'new product/innovation, fueling, training',suggestedPlacements:'',episodes:[]},
+  {brand:'Shockz',contracted:1,placed:1,asset:'',notes:'',priorities:'marathon w/ one of their athletes, bkh, abbot dash',themes:'co-branded product (coming out ahead of marathon',suggestedPlacements:'May 16 - BKH Live show or episode ahead of marathon',episodes:[{ep:166,date:'May 16',title:'RBC Brooklyn Half Live Show   +Meb Minute w/HSS',nc:true}]},
+  {brand:'HSS',contracted:12,placed:12,asset:'Segment',notes:'Meb Minute segments — detected from episode titles',priorities:'',themes:'',suggestedPlacements:'',episodes:[{ep:164,date:'2026-04-23',title:'Evertything You Need to Know about the RBC Brooklyn Half   +Meb Minute w/HSS',nc:false},{ep:166,date:'2026-05-16',title:'RBC Brooklyn Half Live Show   +Meb Minute w/HSS',nc:false},{ep:167,date:'2026-05-21',title:'Becs Preview - Summer Racing Challenge  +Meb Minute w/HSS',nc:false},{ep:171,date:'2026-06-25',title:'Story Arc - Jorney to the start Ep 1 - TBD (no Morgxn)  +Meb Minute w/HSS',nc:false},{ep:174,date:'2026-07-16',title:'BTS - Roundtable - Health Suummer running - Culligan,Peloton, HSS   +Meb Minute w/HSS',nc:false},{ep:176,date:'2026-08-06',title:'BTS - HSS  (Matt James)',nc:false},{ep:178,date:'2026-08-27',title:'Single Story - Viola Cheptoo  +Meb Minute w/HSS',nc:false},{ep:180,date:'2026-09-10',title:'SS- Becs tells story of her August Race  +Meb Minute w/HSS',nc:false},{ep:183,date:'2026-09-24',title:'Story Arc - 5 Borough   +Meb Minute w/HSS',nc:false},{ep:186,date:'2026-10-15',title:'EVYNTK- 2026 TCS NYC Marathon  +Meb Minute w/HSS',nc:false},{ep:193,date:'2026-11-19',title:'TBD- Post Marathon  +Meb Minute w/HSS',nc:false},{ep:197,date:'2026-12-17',title:'TBD  +Meb Minute w/HSS',nc:false}]}
+];
+
+// ============================================
+// RENDERING
+// ============================================
+
+function formatDate(dateStr) {
+  if (!dateStr) return '<span style="color:var(--gray-300)">TBD</span>';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return `<span class="day">${dateStr}</span>`;
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  return `<span class="day">${months[d.getMonth()]} ${d.getDate()}</span><br><span style="color:var(--gray-400);font-size:12px">${days[d.getDay()]}</span>`;
+}
+
+function sponsorTag(name) {
+  const classMap = {
+    'Peloton': 'sponsor-peloton',
+    'Volvo': 'sponsor-volvo',
+    'Mastercard': 'sponsor-mastercard',
+    'Cook Unity': 'sponsor-cookunity',
+    'Shake Shack': 'sponsor-shakeshack',
+    'Maybelline': 'sponsor-maybelline',
+    'Tag Heuer': 'sponsor-tagheur',
+    'Get Your Guide': 'sponsor-getyourguide',
+    'Culligan': 'sponsor-culligan',
+    'New Balance': 'sponsor-newbalance',
+    'Snyders': 'sponsor-snyders',
+    'Maurten': 'sponsor-maurten',
+    'Shockz': 'sponsor-shockz',
+    'HSS': 'sponsor-hss'
+  };
+  const isNC = name.endsWith(' (NC)');
+  const cleanName = isNC ? name.replace(' (NC)', '') : name;
+  const ncClass = isNC ? ' sponsor-unconfirmed' : '';
+  const ncLabel = isNC ? ' <span class="nc-badge">NC</span>' : '';
+  return `<span class="sponsor-tag ${classMap[cleanName] || 'sponsor-none'}${ncClass}">${cleanName}${ncLabel}</span>`;
+}
+
+// renderEpisodes is now handled by applyFilters()
+
+function renderFulfillment() {
+  const grid = document.getElementById('fulfillment-grid');
+  grid.innerHTML = contracts.map(c => {
+    const isWeekly = c.contracted === 'weekly';
+    const isTBD = c.contracted === 'TBD';
+    const contractedNum = (typeof c.contracted === 'number') ? c.contracted : 0;
+    const pct = contractedNum > 0 ? Math.round((c.placed / contractedNum) * 100) : 0;
+    const remaining = contractedNum - c.placed;
+    const barColor = isWeekly ? 'progress-green' : pct >= 80 ? 'progress-green' : pct >= 40 ? 'progress-yellow' : 'progress-red';
+
+    const episodeList = c.episodes.length > 0
+      ? c.episodes.map(e => {
+          const epLabel = e.ep ? `<strong>Ep ${e.ep}</strong> (${e.date})` : `<strong>${e.date}</strong>`;
+          const ncTag = e.nc ? ' <span class="nc-badge">NC</span>' : '';
+          return `<div class="ep-mini">${epLabel} — ${e.title}${ncTag}</div>`;
+        }).join('')
+      : (isWeekly ? '' : '<div class="ep-mini" style="font-style:italic">No episode dates assigned yet</div>');
+
+    // Contracted display
+    const contractedDisplay = isWeekly
+      ? '<span class="weekly-badge">WEEKLY</span>'
+      : isTBD ? '<span style="color:var(--gray-400)">TBD</span>'
+      : `<strong>${c.placed}</strong> / ${c.contracted}`;
+
+    // Asset badge
+    const assetBadge = c.asset ? `<span class="asset-badge">${c.asset}</span>` : '';
+
+    // Details line
+    let detailsText = '';
+    if (isWeekly) {
+      detailsText = 'Included in every episode';
+    } else if (isTBD) {
+      detailsText = 'Contract details pending';
+    } else if (contractedNum > 0) {
+      detailsText = `${remaining} placement${remaining !== 1 ? 's' : ''} remaining`;
+    } else {
+      detailsText = 'No placements scheduled';
+    }
+    if (c.notes) detailsText += ` · ${c.notes}`;
+
+    // Progress bar width
+    const barWidth = isWeekly ? 100 : pct;
+
+    return `<div class="fulfillment-card">
+      <div class="fulfillment-header">
+        <div class="fulfillment-brand">
+          <span class="sponsor-tag ${c.cssClass}">${c.brand}</span>${assetBadge}
+        </div>
+        <div class="fulfillment-count">${contractedDisplay}</div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill ${barColor}" style="width:${barWidth}%"></div></div>
+      <div class="fulfillment-details">${detailsText}</div>
+      <div class="fulfillment-episodes">${episodeList}</div>
+      ${(c.priorities || c.themes || c.suggestedPlacements) ? `<div class="partner-info">
+        ${c.priorities ? `<div class="partner-info-row"><span class="partner-info-label">Partner Priorities:</span> ${c.priorities}</div>` : ''}
+        ${c.themes ? `<div class="partner-info-row"><span class="partner-info-label">Themes:</span> ${c.themes}</div>` : ''}
+        ${c.suggestedPlacements ? `<div class="partner-info-row"><span class="partner-info-label">Suggested Placements:</span> ${c.suggestedPlacements}</div>` : ''}
+      </div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// Tab switching
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'calendar' && typeof renderCalendar === 'function') renderCalendar();
+}
+
+// Current filter state
+let currentFormatFilter = 'all';
+let currentPartnerFilter = '';
+let showAired = false;
+
+// Filter buttons (format)
+function filterEpisodes(filter, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFormatFilter = filter;
+  applyFilters();
+}
+
+// Partner dropdown
+function filterByPartner(select) {
+  currentPartnerFilter = select.value;
+  select.classList.toggle('active', select.value !== '');
+  applyFilters();
+}
+
+function toggleAired() {
+  showAired = document.getElementById('show-aired-toggle').checked;
+  document.querySelector('.aired-toggle').classList.toggle('active', showAired);
+  applyFilters();
+}
+
+// Combined filter logic
+function applyFilters() {
+  const tbody = document.getElementById('episode-body');
+  let filtered = episodes;
+
+  // Hide aired unless toggle is on
+  if (!showAired) filtered = filtered.filter(e => e.status !== 'aired');
+
+  // Apply format filter
+  if (currentFormatFilter === 'live') filtered = filtered.filter(e => e.format);
+  if (currentFormatFilter === 'livestream') filtered = filtered.filter(e => e.format === 'Livestream');
+  if (currentFormatFilter === 'live-audience') filtered = filtered.filter(e => e.format === 'Live Audience');
+  if (currentFormatFilter === 'sponsored') filtered = filtered.filter(e => e.sponsors.length > 0);
+  if (currentFormatFilter === 'needs-ads') filtered = filtered.filter(e => e.sponsors.length === 0);
+
+  // Apply partner filter (match both confirmed and NC versions)
+  if (currentPartnerFilter) {
+    filtered = filtered.filter(e => e.sponsors.some(s => s === currentPartnerFilter || s === currentPartnerFilter + ' (NC)'));
+  }
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No episodes match this filter.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(ep => {
+    const airedClass = ep.status === 'aired' ? 'aired-row' : '';
+    const rowClass = (ep.format === 'Livestream' ? 'livestream-row' : ep.format === 'Live Audience' ? 'live-audience-row' : '') + (airedClass ? ' ' + airedClass : '');
+    const statusMap = { 'aired': 'status-aired', 'scheduled': 'status-scheduled', 'not-started': 'status-not-started', 'live-recording': 'status-scheduled' };
+    const statusDot = statusMap[ep.status] || 'status-tbd';
+    const formatBadge = ep.format === 'Livestream' ? '<span class="badge badge-livestream">LIVESTREAM</span>'
+      : ep.format === 'Live Audience' ? '<span class="badge badge-live-audience">LIVE AUDIENCE</span>'
+      : '<span class="badge badge-studio">Studio</span>';
+
+    const titleHtml = ep.title
+      ? `<div class="ep-title"><span class="status-dot ${statusDot}"></span>${ep.title}</div>
+         ${ep.description ? `<div class="ep-desc">${ep.description}</div>` : ''}
+         ${ep.notes ? `<div class="ep-notes">${ep.notes}</div>` : ''}`
+      : `<div class="ep-title" style="color:var(--gray-300)"><span class="status-dot status-tbd"></span>Not yet planned</div>`;
+
+    const guestHtml = ep.guest
+      ? `<div class="ep-guest">${ep.guest}</div>${ep.member ? `<div class="ep-member">Member: ${ep.member}</div>` : ''}`
+      : (ep.member ? `<div class="ep-member">Member: ${ep.member}</div>` : '<span style="color:var(--gray-300)">TBD</span>');
+
+    const sponsorHtml = ep.sponsors.length > 0
+      ? ep.sponsors.map(s => sponsorTag(s)).join('')
+      : '<span class="sponsor-tag sponsor-none">No ads placed</span>';
+
+    return `<tr class="${rowClass}">
+      <td style="font-weight:700;color:var(--navy);font-size:16px">${ep.ep}</td>
+      <td class="ep-date">${formatDate(ep.air)}</td>
+      <td class="ep-date">${formatDate(ep.record)}</td>
+      <td>${formatBadge}</td>
+      <td>${titleHtml}</td>
+      <td>${guestHtml}</td>
+      <td>${sponsorHtml}</td>
+    </tr>`;
+  }).join('');
+}
+
+// Populate partner dropdown from data
+function populatePartnerDropdown() {
+  const select = document.getElementById('partner-filter');
+  const allSponsors = new Set();
+  episodes.forEach(ep => ep.sponsors.forEach(s => allSponsors.add(s.replace(' (NC)', ''))));
+  // Also add all contracted brands so they appear even before placements
+  contracts.forEach(c => allSponsors.add(c.brand));
+  const sorted = Array.from(allSponsors).sort();
+  sorted.forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = name;
+    select.appendChild(opt);
+  });
+}
+
+// Initial render
+populatePartnerDropdown();
+applyFilters();
+renderFulfillment();
+
+// ============================================
+// CALENDAR PLANNER
+// ============================================
+const CAL_MONTHS = [
+  { name: "March", year: 2026, month: 2 },
+  { name: "April", year: 2026, month: 3 },
+  { name: "May", year: 2026, month: 4 },
+  { name: "June", year: 2026, month: 5 },
+  { name: "July", year: 2026, month: 6 },
+  { name: "August", year: 2026, month: 7 },
+  { name: "September", year: 2026, month: 8 },
+  { name: "October", year: 2026, month: 9 },
+  { name: "November", year: 2026, month: 10 },
+  { name: "December", year: 2026, month: 11 },
+];
+const CAL_TYPE_COLORS = {
+  "Race": { bg: "#1e3a8a", border: "#1e3a8a", text: "#ffffff" },
+  "Notable Event": { bg: "#475569", border: "#475569", text: "#ffffff" },
+  "Single Story": { bg: "#fef3c7", border: "#d97706", text: "#92400e" },
+  "Story Arc": { bg: "#dbeafe", border: "#2563eb", text: "#1e3a8a" },
+  "BTS": { bg: "#e0e7ff", border: "#6366f1", text: "#3730a3" },
+  "EYNTK/STU": { bg: "#d1fae5", border: "#059669", text: "#065f46" },
+  "Livestream": { bg: "#fce7f3", border: "#db2777", text: "#9d174d" },
+  "Becs": { bg: "#fde68a", border: "#f59e0b", text: "#78350f" },
+  "Follow-up": { bg: "#e9d5ff", border: "#7c3aed", text: "#5b21b6" },
+};
+const CAL_ABBREV = { "Story Arc": "ARC", "Single Story": "SS", "Livestream": "LIVE", "Follow-up": "F/U" };
+const CAL_MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+const CAL_INITIAL_EPISODES = [
+  { id: 50, date: "2026-03-01", title: "NYRR Washington Heights Salsa, Blues, and Shamrocks 5K", type: "Race" },
+  { id: 51, date: "2026-03-15", title: "United Airlines NYC Half", type: "Race" },
+  { id: 52, date: "2026-04-12", title: "Run as One 4M", type: "Race" },
+  { id: 53, date: "2026-04-18", title: "Rising NYRR Spring Jamboree Presented by TCS", type: "Race" },
+  { id: 54, date: "2026-04-19", title: "RBC Race for the Kids 4M", type: "Race" },
+  { id: 55, date: "2026-04-26", title: "Maybelline Women's Half", type: "Race" },
+  { id: 56, date: "2026-05-02", title: "NYRR Mindful 5K", type: "Race" },
+  { id: 57, date: "2026-05-05", title: "NYRR Brooklyn BK 5K", type: "Race" },
+  { id: 58, date: "2026-05-16", title: "RBC Brooklyn Half", type: "Race" },
+  { id: 59, date: "2026-06-03", title: "Global Running Day", type: "Race" },
+  { id: 60, date: "2026-06-06", title: "Mastercard NY Mini 10K", type: "Race" },
+  { id: 61, date: "2026-06-20", title: "Citizens Queens 10K", type: "Race" },
+  { id: 62, date: "2026-06-27", title: "FRNY LGBTQ+ Pride Run 4M", type: "Race" },
+  { id: 63, date: "2026-06-28", title: "Achilles 4M", type: "Race" },
+  { id: 64, date: "2026-07-11", title: "NYRR 4M (Retro Run)", type: "Race" },
+  { id: 65, date: "2026-07-15", title: "NYRR Summer Speed Series #1", type: "Race" },
+  { id: 66, date: "2026-07-26", title: "NYRR Team Champions 5M", type: "Race" },
+  { id: 67, date: "2026-07-29", title: "NYRR Summer Speed Series #2", type: "Race" },
+  { id: 68, date: "2026-08-08", title: "Percy Sutton Harlem 5K", type: "Race" },
+  { id: 69, date: "2026-08-12", title: "NYRR Summer Speed Series #3", type: "Race" },
+  { id: 70, date: "2026-08-15", title: "TCSNYCM Training Series 12M", type: "Race" },
+  { id: 71, date: "2026-08-22", title: "Grete's Great Gallop 10K", type: "Race" },
+  { id: 72, date: "2026-09-13", title: "New Balance 5th Ave Mile", type: "Race" },
+  { id: 73, date: "2026-09-19", title: "New Balance Bronx 10M", type: "Race" },
+  { id: 74, date: "2026-09-20", title: "TCSNYCM Training Series 18M", type: "Race" },
+  { id: 75, date: "2026-09-27", title: "VCP Cross Country #1", type: "Race" },
+  { id: 76, date: "2026-10-03", title: "VCP Cross Country #2", type: "Race" },
+  { id: 77, date: "2026-10-04", title: "NYRR Jersey City 5K", type: "Race" },
+  { id: 78, date: "2026-10-11", title: "NYRR Staten Island Half", type: "Race" },
+  { id: 79, date: "2026-10-17", title: "Rising NYRR Fall Jamboree Presented by TCS", type: "Race" },
+  { id: 80, date: "2026-10-25", title: "TCS New York City Marathon Kids Kickoff", type: "Race" },
+  { id: 81, date: "2026-10-31", title: "Abbott Dash to the Finish Line 5K & USATF Champs", type: "Race" },
+  { id: 82, date: "2026-11-01", title: "TCS New York City Marathon", type: "Race" },
+  { id: 83, date: "2026-11-15", title: "VCP Cross Country #3", type: "Race" },
+  { id: 84, date: "2026-11-22", title: "Race to Deliver 4M", type: "Race" },
+  { id: 85, date: "2026-12-05", title: "NYRR Ted Corbitt 15K", type: "Race" },
+  { id: 86, date: "2026-12-12", title: "NYRR Frosty 5K", type: "Race" },
+  { id: 87, date: "2026-12-31", title: "NYRR Midnight Run", type: "Race" },
+  { id: 88, date: "2026-08-28", title: "Becs trail race", type: "Notable Event" },
+  { id: 103, date: "2026-03-05", title: "ETYNTK- UANYC Half", type: "EYNTK/STU" },
+  { id: 202, date: "2026-03-12", title: "Local Elites", type: "Single Story" },
+  { id: 1, date: "2026-03-15", title: "Post-show champs livestream (Citius collab)", type: "Livestream" },
+  { id: 104, date: "2026-03-19", title: "Liz Cho and Mike Marza", type: "Single Story" },
+  { id: 105, date: "2026-03-26", title: "Mary Wittenberg", type: "Single Story" },
+  { id: 5, date: "2026-04-09", title: "Kenya roundup — NYRR BTS conversation", type: "BTS" },
+  { id: 3, date: "2026-04-18", title: "BTS at New Balance Marathon Relay — Boston", type: "BTS" },
+  { id: 111, date: "2026-04-23", title: "ETYNTK - RBC Brooklyn Half", type: "EYNTK/STU", hss: true },
+  { id: 4, date: "2026-05-07", title: "Parkrun / mental health story", type: "Single Story" },
+  { id: 6, date: "2026-05-16", title: "Post-race livestream champ interview collab- YouTube", type: "Livestream", hss: true },
+  { id: 10, date: "2026-05-21", title: "Becs: preview of trail race", type: "Becs", hss: true },
+  { id: 203, date: "2026-06-06", title: "MIni 10k Champs", type: "Livestream" },
+  { id: 11, date: "2026-06-11", title: "NYRR History TBD — Ep 1", type: "Story Arc" },
+  { id: 12, date: "2026-06-18", title: "NYRR History TBD — Ep 2", type: "Story Arc" },
+  { id: 201, date: "2026-06-25", title: "Journey to the Start - Ep 2 Morgan/Nashville", type: "Story Arc", hss: true },
+  { id: 7, date: "2026-07-02", title: "Journey to the Start — Ep 2 Morgan Nashville", type: "Story Arc" },
+  { id: 1000, date: "2026-07-09", title: "NYRR - STU for Members July Edition", type: "EYNTK/STU" },
+  { id: 101, date: "2026-07-16", title: "Healthy Summer running - Culligan, Peloton, HSS", type: "BTS", hss: true },
+  { id: 2, date: "2026-07-30", title: "UANYC Half champion narrative", type: "Single Story" },
+  { id: 27, date: "2026-08-06", title: "HSS behind the scenes (matt james?)", type: "BTS", hss: true },
+  { id: 15, date: "2026-08-13", title: "Ultra running story - to tie in with Becs race", type: "Single Story" },
+  { id: 13, date: "2026-08-27", title: "Benson Kipruto deep dive  (or another NYRR champ)", type: "Single Story", hss: true },
+  { id: 16, date: "2026-09-10", title: "Becs recounts trail race (Aug 28)", type: "Becs", hss: true },
+  { id: 18, date: "2026-09-13", title: "Livestream champ interview (5th Ave Mile)", type: "Livestream" },
+  { id: 19, date: "2026-09-17", title: "5 Boroughs Arc — Ep 1", type: "Story Arc" },
+  { id: 20, date: "2026-09-24", title: "5 Boroughs Arc — Ep 2", type: "Story Arc", hss: true },
+  { id: 21, date: "2026-10-01", title: "5 Boroughs Arc — Ep 3", type: "Story Arc" },
+  { id: 22, date: "2026-10-08", title: "5 Boroughs Arc — Ep 4 (optional)", type: "Story Arc" },
+  { id: 23, date: "2026-10-15", title: "EYNTK NYC Marathon — 50th Anniversary", type: "EYNTK/STU", hss: true },
+  { id: 100, date: "2026-10-22", title: "TBD", type: "Single Story" },
+  { id: 102, date: "2026-10-31", title: "Livestream @champ episode - Abbot dash", type: "Livestream" },
+  { id: 26, date: "2026-11-01", title: "Livestream: marathon champ interviews", type: "Livestream" },
+  { id: 110, date: "2026-11-05", title: "TBD - post marathon story", type: "Single Story" },
+  { id: 25, date: "2026-11-12", title: "NYRR STU for Members - November Edition", type: "EYNTK/STU" },
+  { id: 106, date: "2026-11-19", title: "TBD", type: "Single Story", hss: true },
+  { id: 107, date: "2026-11-26", title: "TBD", type: "Single Story" },
+  { id: 28, date: "2026-12-03", title: "TBD", type: "Single Story" },
+  { id: 108, date: "2026-12-10", title: "TBD", type: "Single Story" },
+  { id: 109, date: "2026-12-17", title: "TBD", type: "Single Story", hss: true },
+];
+
+// Calendar state — load from localStorage if available, otherwise use defaults
+const STORAGE_KEY = 'stp_calendar_episodes';
+let calEpisodes;
+const stored = localStorage.getItem(STORAGE_KEY);
+if (stored) {
+  try {
+    const parsed = JSON.parse(stored);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      calEpisodes = parsed;
+      console.log('Loaded ' + parsed.length + ' episodes from localStorage');
+    } else {
+      calEpisodes = JSON.parse(JSON.stringify(CAL_INITIAL_EPISODES));
+    }
+  } catch(e) {
+    calEpisodes = JSON.parse(JSON.stringify(CAL_INITIAL_EPISODES));
+  }
+} else {
+  calEpisodes = JSON.parse(JSON.stringify(CAL_INITIAL_EPISODES));
+}
+let calViewMonth = 0;
+let calDraggingId = null;
+let calNextId = Math.max(...calEpisodes.map(e => e.id), 999) + 1;
+let calSelectedType = null;
+let calHasUnsavedChanges = false;
+
+// Auto-save to localStorage whenever episodes change
+function calPersist() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(calEpisodes));
+  calHasUnsavedChanges = true;
+}
+
+// Calendar helpers
+function calGetDaysInMonth(y, m) { return new Date(y, m + 1, 0).getDate(); }
+function calGetFirstDayOfWeek(y, m) { return new Date(y, m, 1).getDay(); }
+function calDateStr(y, m, d) { return `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`; }
+function calParseDate(s) { const [y,m,d] = s.split("-").map(Number); return { year: y, month: m-1, day: d }; }
+function calEsc(s) { const d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+function calAbbrev(type) { return CAL_ABBREV[type] || type; }
+
+function renderCalendar() {
+  const app = document.getElementById("cal-app");
+  if (!app) return;
+  const m = CAL_MONTHS[calViewMonth];
+  const daysInMonth = calGetDaysInMonth(m.year, m.month);
+  const firstDay = calGetFirstDayOfWeek(m.year, m.month);
+  const monthEps = calEpisodes.filter(ep => { const p = calParseDate(ep.date); return p.year === m.year && p.month === m.month; });
+  const podcastEps = calEpisodes.filter(e => e.type !== "Race" && e.type !== "Notable Event");
+  const epCount = podcastEps.length;
+  const typeCounts = {};
+  podcastEps.forEach(ep => { typeCounts[ep.type] = (typeCounts[ep.type] || 0) + 1; });
+  const monthPodcastCount = monthEps.filter(e => e.type !== "Race" && e.type !== "Notable Event").length;
+  const monthRaceCount = monthEps.filter(e => e.type === "Race").length;
+
+  const cells = [];
+  for (let i = 0; i < firstDay; i++) cells.push(null);
+  for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+  while (cells.length % 7 !== 0) cells.push(null);
+  const weeks = [];
+  for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7));
+
+  const weekCounts = {};
+  calEpisodes.forEach(ep => {
+    const d = new Date(ep.date + "T00:00:00");
+    const ws = new Date(d); ws.setDate(d.getDate() - d.getDay());
+    const key = ws.toISOString().slice(0,10);
+    if (ep.type !== "Livestream" && ep.type !== "Race" && ep.type !== "Notable Event") weekCounts[key] = (weekCounts[key]||0) + 1;
+  });
+  const overloaded = Object.entries(weekCounts).filter(([,c]) => c > 1);
+
+  let html = `
+    <div class="cal-top-header">
+      <h2>Set the Pace &mdash; 2026 Calendar Planner</h2>
+      <div style="display:flex;align-items:center;gap:8px">
+        ${stored ? '<span style="font-size:11px;color:#059669;font-weight:500">&#10003; Restored from last session</span>' : ''}
+        <button class="cal-btn cal-btn-primary" onclick="calDownloadJSON()">&#x1F4BE; Save JSON</button>
+        <button class="cal-btn" onclick="document.getElementById('calFileInput').click()">&#x1F4C2; Load</button>
+        <input type="file" id="calFileInput" accept=".json,.txt" onchange="calLoadFile(event)" style="display:none">
+        <button class="cal-btn cal-btn-reset" onclick="calResetCalendar()">Reset</button>
+      </div>
+    </div>
+    <p class="cal-subtitle">Drag episodes to move them. Double-click a day to add. Double-click an episode to edit. <strong>Changes auto-save in your browser</strong> — use Save JSON to export a file.</p>`;
+
+  // Legend
+  html += `<div style="margin-bottom:12px"><div class="cal-legend">`;
+  for (const [type, c] of Object.entries(CAL_TYPE_COLORS)) {
+    const count = typeCounts[type] || 0;
+    const isEp = type !== "Race" && type !== "Notable Event";
+    const isSel = calSelectedType === type;
+    const clickable = isEp && count > 0;
+    const outlineStyle = isSel ? `outline:2px solid ${c.border};outline-offset:1px;border:2px solid ${c.text};` : `border:1px solid ${c.border};`;
+    html += `<span class="cal-legend-pill ${clickable ? 'clickable' : ''}" style="background:${c.bg};color:${c.text};${outlineStyle}" ${clickable ? `onclick="calToggleType('${type}')"` : ''}>${calEsc(type)}${isEp && count > 0 ? ` (${count})` : ''}</span>`;
+  }
+  const hssCount = podcastEps.filter(e => e.hss).length;
+  html += `</div><div class="cal-stats"><strong>${epCount}</strong> total episodes planned &nbsp;|&nbsp; <span style="color:#2563eb;font-weight:600">HSS: ${hssCount}</span></div>`;
+
+  // Selected type detail
+  if (calSelectedType) {
+    const typeEps = podcastEps.filter(e => e.type === calSelectedType).sort((a,b) => a.date.localeCompare(b.date));
+    const c = CAL_TYPE_COLORS[calSelectedType];
+    html += `<div class="cal-type-detail" style="border-color:${c.border}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:13px;font-weight:700;color:${c.text}">${calEsc(calSelectedType)} &mdash; ${typeEps.length} episode${typeEps.length !== 1 ? 's' : ''}</span>
+        <span style="cursor:pointer;font-size:12px;color:#6b7280" onclick="calToggleType(null)">Close &times;</span>
+      </div>`;
+    typeEps.forEach(ep => {
+      const p = calParseDate(ep.date);
+      html += `<div class="cal-type-detail-item"><span class="cal-type-detail-date">${CAL_MONTH_NAMES[p.month]} ${p.day}</span><span>${calEsc(ep.title)}</span></div>`;
+    });
+    html += `</div>`;
+  }
+  html += `</div>`;
+
+  // Month nav
+  html += `<div class="cal-month-nav">
+    <button ${calViewMonth === 0 ? 'disabled' : ''} onclick="calSetMonth(${calViewMonth - 1})">&larr; ${calViewMonth > 0 ? CAL_MONTHS[calViewMonth-1].name : ''}</button>
+    <div><div class="cal-month-title">${m.name} 2026</div><div class="cal-month-ep-count">${monthPodcastCount} episode${monthPodcastCount !== 1 ? 's' : ''} this month</div></div>
+    <button ${calViewMonth === CAL_MONTHS.length-1 ? 'disabled' : ''} onclick="calSetMonth(${calViewMonth + 1})">${calViewMonth < CAL_MONTHS.length-1 ? CAL_MONTHS[calViewMonth+1].name : ''} &rarr;</button>
+  </div>`;
+
+  // Month tabs
+  html += `<div class="cal-month-tabs">`;
+  CAL_MONTHS.forEach((mo, i) => {
+    html += `<button class="cal-month-tab ${i === calViewMonth ? 'active' : ''}" onclick="calSetMonth(${i})">${mo.name.slice(0,3)}</button>`;
+  });
+  html += `</div>`;
+
+  // Calendar grid
+  html += `<div class="cal-grid"><div class="cal-grid-header">`;
+  ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(d => { html += `<div>${d}</div>`; });
+  html += `</div>`;
+
+  weeks.forEach(week => {
+    html += `<div class="cal-week">`;
+    week.forEach(day => {
+      if (!day) {
+        html += `<div class="cal-day empty"></div>`;
+        return;
+      }
+      const ds = calDateStr(m.year, m.month, day);
+      const dayEps = monthEps.filter(ep => ep.date === ds);
+      dayEps.sort((a,b) => {
+        const order = { Race: 0, "Notable Event": 1 };
+        return (order[a.type] ?? 2) - (order[b.type] ?? 2);
+      });
+      html += `<div class="cal-day" ondragover="calHandleDragOver(event)" ondragleave="calHandleDragLeave(event)" ondrop="calHandleDrop(event,'${ds}')" ondblclick="calOpenAddModal('${ds}')">`;
+      html += `<div class="cal-day-num">${day}</div>`;
+      dayEps.forEach(ep => {
+        const c = CAL_TYPE_COLORS[ep.type] || { bg: "#f3f4f6", border: "#9ca3af", text: "#374151" };
+        const isPodcast = ep.type !== "Race" && ep.type !== "Notable Event";
+        const borderLeft = isPodcast ? '6px solid #f97316' : `3px solid ${c.border}`;
+        const borderRight = ep.hss ? '3px solid #2563eb' : 'none';
+        html += `<div class="cal-pill" draggable="true" ondragstart="calHandleDragStart(event,${ep.id})" ondblclick="event.stopPropagation();calOpenEditModal(${ep.id})" style="background:${c.bg};border-left:${borderLeft};border-right:${borderRight};color:${c.text}" title="${calEsc(ep.type)}: ${calEsc(ep.title)}${ep.hss ? ' (HSS)' : ''}">`;
+        html += `<span class="cal-pill-type">${calEsc(calAbbrev(ep.type))}</span>${calEsc(ep.title)}`;
+        if (ep.hss) html += `<span style="margin-left:3px;font-size:8px;font-weight:700;color:#2563eb">HSS</span>`;
+        html += `<span class="cal-pill-delete" onclick="event.stopPropagation();calDeleteEp(${ep.id})">&times;</span>`;
+        html += `</div>`;
+      });
+      html += `</div>`;
+    });
+    html += `</div>`;
+  });
+  html += `</div>`;
+
+  // Summary
+  html += `<div class="cal-month-summary"><strong>${m.name}:</strong> ${monthPodcastCount} episode${monthPodcastCount !== 1 ? 's' : ''} scheduled`;
+  if (monthRaceCount > 0) html += ` | ${monthRaceCount} NYRR race${monthRaceCount !== 1 ? 's' : ''}`;
+  html += `</div>`;
+
+  if (overloaded.length > 0) {
+    html += `<div class="cal-warning"><strong>One-per-week warning:</strong> ${overloaded.length} week${overloaded.length > 1 ? 's have' : ' has'} multiple feed episodes. Drag to spread out.</div>`;
+  }
+
+  app.innerHTML = html;
+}
+
+// Calendar event handlers
+function calSetMonth(i) { calViewMonth = Math.max(0, Math.min(CAL_MONTHS.length-1, i)); renderCalendar(); }
+function calToggleType(t) { calSelectedType = calSelectedType === t ? null : t; renderCalendar(); }
+function calDownloadJSON() {
+  try {
+    const json = JSON.stringify(calEpisodes, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "STP_Calendar_" + new Date().toISOString().slice(0, 10) + ".json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    calHasUnsavedChanges = false;
+  } catch (e) { alert("Download failed"); }
+}
+function calLoadFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    try {
+      const data = JSON.parse(evt.target.result);
+      if (Array.isArray(data) && data.length > 0) {
+        calEpisodes = data;
+        calNextId = Math.max(...calEpisodes.map(e => e.id)) + 1;
+        calPersist();
+        renderCalendar();
+      } else { alert("Invalid data — expected an array of episodes."); }
+    } catch (err) { alert("Could not parse file. Make sure it's a valid JSON file."); }
+  };
+  reader.readAsText(file);
+  event.target.value = "";
+}
+function calResetCalendar() {
+  if (confirm("Reset to the original calendar? Your current changes will be lost.")) {
+    calEpisodes = JSON.parse(JSON.stringify(CAL_INITIAL_EPISODES));
+    calNextId = Math.max(...calEpisodes.map(e => e.id), 999) + 1;
+    calPersist();
+    calHasUnsavedChanges = false;
+    renderCalendar();
+  }
+}
+
+function calHandleDragStart(e, id) { calDraggingId = id; e.dataTransfer.setData("text/plain", String(id)); }
+function calHandleDragOver(e) { e.preventDefault(); e.currentTarget.classList.add("drag-over"); }
+function calHandleDragLeave(e) { e.currentTarget.classList.remove("drag-over"); }
+function calHandleDrop(e, ds) {
+  e.preventDefault(); e.currentTarget.classList.remove("drag-over");
+  if (calDraggingId !== null) {
+    const ep = calEpisodes.find(ep => ep.id === calDraggingId);
+    if (ep) { ep.date = ds; calPersist(); }
+    calDraggingId = null;
+    renderCalendar();
+  }
+}
+function calDeleteEp(id) { calEpisodes = calEpisodes.filter(ep => ep.id !== id); calPersist(); renderCalendar(); }
+
+function calOpenAddModal(date) {
+  const overlay = document.createElement("div");
+  overlay.className = "cal-modal-overlay";
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+  const typeOptions = Object.keys(CAL_TYPE_COLORS).map(t => `<option value="${t}">${t}</option>`).join("");
+  overlay.innerHTML = `<div class="cal-modal">
+    <h3>Add Episode &mdash; ${date}</h3>
+    <div class="cal-field"><label>Title</label><input id="calAddTitle" placeholder="Episode title..." autofocus></div>
+    <div class="cal-field"><label>Type</label><select id="calAddType">${typeOptions}</select></div>
+    <div class="cal-field" style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="calAddHss" style="width:auto"><label for="calAddHss" style="margin:0;cursor:pointer">Includes Meb Minute with HSS</label></div>
+    <div class="cal-actions">
+      <button class="cal-btn" onclick="this.closest('.cal-modal-overlay').remove()">Cancel</button>
+      <button class="cal-btn cal-btn-primary" onclick="calAddEpisode('${date}')">Add</button>
+    </div>
+  </div>`;
+  document.body.appendChild(overlay);
+  setTimeout(() => document.getElementById("calAddTitle")?.focus(), 50);
+}
+function calAddEpisode(date) {
+  const title = document.getElementById("calAddTitle").value.trim();
+  const type = document.getElementById("calAddType").value;
+  const hss = document.getElementById("calAddHss").checked;
+  if (!title) return;
+  const ep = { id: calNextId++, date, title, type };
+  if (hss) ep.hss = true;
+  calEpisodes.push(ep);
+  calPersist();
+  document.querySelector(".cal-modal-overlay")?.remove();
+  renderCalendar();
+}
+
+function calOpenEditModal(id) {
+  const ep = calEpisodes.find(e => e.id === id);
+  if (!ep) return;
+  const overlay = document.createElement("div");
+  overlay.className = "cal-modal-overlay";
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+  const typeOptions = Object.keys(CAL_TYPE_COLORS).map(t => `<option value="${t}" ${t === ep.type ? 'selected' : ''}>${t}</option>`).join("");
+  overlay.innerHTML = `<div class="cal-modal">
+    <h3>Edit Episode</h3>
+    <div class="cal-field"><label>Title</label><input id="calEditTitle" value="${calEsc(ep.title)}" autofocus></div>
+    <div class="cal-field"><label>Date</label><input type="date" id="calEditDate" value="${ep.date}" min="2026-03-01" max="2026-12-31"></div>
+    <div class="cal-field"><label>Type</label><select id="calEditType">${typeOptions}</select></div>
+    <div class="cal-field" style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="calEditHss" ${ep.hss ? 'checked' : ''} style="width:auto"><label for="calEditHss" style="margin:0;cursor:pointer">Includes Meb Minute with HSS</label></div>
+    <div class="cal-actions">
+      <button class="cal-btn" onclick="this.closest('.cal-modal-overlay').remove()">Cancel</button>
+      <button class="cal-btn cal-btn-primary" onclick="calSaveEdit(${id})">Save</button>
+    </div>
+  </div>`;
+  document.body.appendChild(overlay);
+  setTimeout(() => document.getElementById("calEditTitle")?.focus(), 50);
+}
+function calSaveEdit(id) {
+  const title = document.getElementById("calEditTitle").value.trim();
+  const date = document.getElementById("calEditDate").value;
+  const type = document.getElementById("calEditType").value;
+  const hss = document.getElementById("calEditHss").checked;
+  if (!title) return;
+  const ep = calEpisodes.find(e => e.id === id);
+  if (ep) { ep.title = title; ep.date = date; ep.type = type; ep.hss = hss || undefined; calPersist(); }
+  document.querySelector(".cal-modal-overlay")?.remove();
+  renderCalendar();
+}
+</script>
+
+</body>
+</html>
