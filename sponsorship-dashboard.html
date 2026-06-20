@@ -1163,23 +1163,36 @@ const CAL_INITIAL_EPISODES = [
 ];
 
 // Calendar state — load from localStorage if available, otherwise use defaults
+// DATA_VERSION must be bumped each time CAL_INITIAL_EPISODES is updated so the
+// browser discards its stale localStorage cache automatically.
+const CAL_DATA_VERSION = 2;
 const STORAGE_KEY = 'stp_calendar_episodes';
+const VERSION_KEY = 'stp_calendar_version';
 let calEpisodes;
-const stored = localStorage.getItem(STORAGE_KEY);
-if (stored) {
-  try {
-    const parsed = JSON.parse(stored);
-    if (Array.isArray(parsed) && parsed.length > 0) {
-      calEpisodes = parsed;
-      console.log('Loaded ' + parsed.length + ' episodes from localStorage');
-    } else {
+const storedVersion = parseInt(localStorage.getItem(VERSION_KEY) || '0', 10);
+if (storedVersion === CAL_DATA_VERSION) {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        calEpisodes = parsed;
+        console.log('Loaded ' + parsed.length + ' episodes from localStorage (v' + CAL_DATA_VERSION + ')');
+      } else {
+        calEpisodes = JSON.parse(JSON.stringify(CAL_INITIAL_EPISODES));
+      }
+    } catch(e) {
       calEpisodes = JSON.parse(JSON.stringify(CAL_INITIAL_EPISODES));
     }
-  } catch(e) {
+  } else {
     calEpisodes = JSON.parse(JSON.stringify(CAL_INITIAL_EPISODES));
   }
 } else {
+  // Data version changed — discard old cache and load fresh data
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.setItem(VERSION_KEY, String(CAL_DATA_VERSION));
   calEpisodes = JSON.parse(JSON.stringify(CAL_INITIAL_EPISODES));
+  console.log('Calendar data updated to v' + CAL_DATA_VERSION + ' — cleared stale cache');
 }
 let calViewMonth = 3;
 let calDraggingId = null;
@@ -1190,6 +1203,7 @@ let calHasUnsavedChanges = false;
 // Auto-save to localStorage whenever episodes change
 function calPersist() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(calEpisodes));
+  localStorage.setItem(VERSION_KEY, String(CAL_DATA_VERSION));
   calHasUnsavedChanges = true;
 }
 
