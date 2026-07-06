@@ -1166,7 +1166,7 @@ const CAL_INITIAL_EPISODES = [
 // Calendar state — load from localStorage if available, otherwise use defaults
 // DATA_VERSION must be bumped each time CAL_INITIAL_EPISODES is updated so the
 // browser discards its stale localStorage cache automatically.
-const CAL_DATA_VERSION = 5;
+const CAL_DATA_VERSION = 6;
 const STORAGE_KEY = 'stp_calendar_episodes';
 const VERSION_KEY = 'stp_calendar_version';
 let calEpisodes;
@@ -1195,7 +1195,7 @@ if (storedVersion === CAL_DATA_VERSION) {
   calEpisodes = JSON.parse(JSON.stringify(CAL_INITIAL_EPISODES));
   console.log('Calendar data updated to v' + CAL_DATA_VERSION + ' — cleared stale cache');
 }
-let calViewMonth = 3;
+let calViewMonth = 4;
 let calDraggingId = null;
 let calNextId = Math.max(...calEpisodes.map(e => e.id), 999) + 1;
 let calSelectedType = null;
