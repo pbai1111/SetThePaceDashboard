@@ -876,7 +876,7 @@ function renderFulfillment() {
     const contractedNum = (typeof c.contracted === 'number') ? c.contracted : 0;
     const pct = contractedNum > 0 ? Math.round((c.placed / contractedNum) * 100) : 0;
     const remaining = contractedNum - c.placed;
-    const barColor = isWeekly ? 'progress-green' : pct >= 80 ? 'progress-green' : pct >= 40 ? 'progress-yellow' : 'progress-red';
+    const barColor = isWeekly ? 'progress-green' : isTBD ? 'progress-yellow' : pct >= 80 ? 'progress-green' : pct >= 40 ? 'progress-yellow' : 'progress-red';
 
     const episodeList = c.episodes.length > 0
       ? c.episodes.map(e => {
@@ -889,7 +889,7 @@ function renderFulfillment() {
     // Contracted display
     const contractedDisplay = isWeekly
       ? '<span class="weekly-badge">WEEKLY</span>'
-      : isTBD ? '<span style="color:var(--gray-400)">TBD</span>'
+      : isTBD ? (c.placed > 0 ? `<strong>${c.placed}</strong> / TBD` : '<span style="color:var(--gray-400)">TBD</span>')
       : `<strong>${c.placed}</strong> / ${c.contracted}`;
 
     // Asset badge
@@ -900,7 +900,7 @@ function renderFulfillment() {
     if (isWeekly) {
       detailsText = 'Included in every episode';
     } else if (isTBD) {
-      detailsText = 'Contract details pending';
+      detailsText = c.placed > 0 ? `${c.placed} placed — contract count pending` : 'Contract details pending';
     } else if (contractedNum > 0) {
       detailsText = `${remaining} placement${remaining !== 1 ? 's' : ''} remaining`;
     } else {
@@ -909,7 +909,7 @@ function renderFulfillment() {
     if (c.notes) detailsText += ` · ${c.notes}`;
 
     // Progress bar width
-    const barWidth = isWeekly ? 100 : pct;
+    const barWidth = isWeekly ? 100 : isTBD ? (c.placed > 0 ? 50 : 0) : pct;
 
     return `<div class="fulfillment-card">
       <div class="fulfillment-header">
