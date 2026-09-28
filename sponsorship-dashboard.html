@@ -662,17 +662,16 @@
       <div class="header-sub">New York Road Runners — Podcast Partner Overview</div>
     </div>
     <div class="header-meta">
-      Last updated: Sep 24, 2026<br>
+      Last updated: Sep 28, 2026<br>
       Source: <a href="https://docs.google.com/spreadsheets/d/14tOnUwPcO30TGWJCKD5BzaJ_nmmtO-YoCG6raOQitYY/edit" target="_blank" style="color:rgba(255,255,255,1);text-decoration:underline">Project Management Master (Google Sheets)</a>
     </div>
   </div>
 </div>
 
 <div class="changes-banner">
-  <h3>Recent Changes — Sep 24, 2026</h3>
+  <h3>Recent Changes — Sep 28, 2026</h3>
   <ul>
-    <li><strong>Ep 179</strong> now aired — title updated to "Becs and Friends Take Us Way Beyond the Marathon Distance - Stories from the UTMB"</li>
-    <li><strong>Ep 181</strong> record date set — now recording 10/6</li>
+    <li><strong>Ep 184</strong> now in production — status updated to scheduled</li>
   </ul>
 </div>
 
@@ -758,7 +757,7 @@
 // ============================================
 // DATA — This is what gets regenerated from the master
 // ============================================
-const LAST_UPDATED = "Sep 24, 2026";
+const LAST_UPDATED = "Sep 28, 2026";
 
 const episodes = [
   {ep:155,status:'aired',format:'',record:'2026-02-24',air:'2026-02-26',title:'The Vital Importance of Safety for Women Runners',desc:'This episode discusses sexual violence, which may be triggering or distressing for some listeners.  In this episode, New York Road Runners leaders Christine Burke and Erica Edwards-O’Neal explore runner safety—particularly for women—through global and local lenses. Reflecting on a recent trip to Kenya, they share their experience meeting with Tirop’s Angels, an organization that combats gender-based violence. Christine and Erica then interview Jean Knaack, CEO of the Road Runners Club of America, who discusses the need for a systemic approach to safety in running clubs, emphasizing proactive leadership, clear codes of conduct, and shared responsibility—particularly encouraging men to understand the distinct safety concerns women face. A second conversation spotlights Ashley Raymond and Meagan Doyle, co-founders of Safely, a company that makes safety products including the Sidekick, a compact, five-in-one self-defense tool designed with runners in mind. While acknowledging women shouldn’t bear the burden of protection, they advocate preparedness, education, and practical tools to help women feel confident and secure.   FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'Jean Knaak - CEO of Road Runners Club of America - on women\'s safetyAshley and Meaghan  - cofounders of Safely',sponsors:['Peloton']},
@@ -791,7 +790,7 @@ const episodes = [
   {ep:'WOR',status:'scheduled',format:'',record:'10/6/2026',air:'Sunday 10/18 WOR Only',title:'Tag Heuer - WOR ONLY - TAG Heuer®Branded',desc:'',guest:'',sponsors:['Tag Heuer']},
   {ep:182,status:'scheduled',format:'',record:'2026-10-13',air:'2026-10-15',title:'Single Story Charity 2- Back on My Feet',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','Get Your Guide','Maybelline']},
   {ep:183,status:'scheduled',format:'',record:'2026-10-20',air:'2026-10-22',title:'Single Story  Charity 3 - Freds Team',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'(Sheena Lawrick team inspire has been requested as one guest)',sponsors:['Peloton','Get Your Guide','Shake Shack','Mastercard']},
-  {ep:184,status:'upcoming',format:'Live Audience',record:'2026-10-29',air:'2026-10-29',title:'Live from the Expo Presented by Shokz',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','Shockz','Culligan']},
+  {ep:184,status:'scheduled',format:'Live Audience',record:'2026-10-29',air:'2026-10-29',title:'Live from the Expo Presented by Shokz',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','Shockz','Culligan']},
   {ep:185,status:'scheduled',format:'Livestream',record:'2026-10-31',air:'2026-10-31',title:'Abbot champs Live Show & watch party',desc:'',guest:'',sponsors:['Peloton','Mastercard','Volvo']},
   {ep:186,status:'upcoming',format:'Livestream',record:'2026-11-01',air:'2026-11-01',title:'Marathon Champs Live show',desc:'',guest:'',sponsors:['Peloton','Mastercard','Volvo']},
   {ep:187,status:'upcoming',format:'',record:'2026-11-03',air:'2026-11-05',title:'TBD- Post Marathon Story',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','Shake Shack','Culligan']},
@@ -1187,7 +1186,7 @@ if (storedVersion === CAL_DATA_VERSION) {
   calEpisodes = JSON.parse(JSON.stringify(CAL_INITIAL_EPISODES));
   console.log('Calendar data updated to v' + CAL_DATA_VERSION + ' — cleared stale cache');
 }
-let calViewMonth = 7;
+let calViewMonth = 6;
 let calDraggingId = null;
 let calNextId = Math.max(...calEpisodes.map(e => e.id), 999) + 1;
 let calSelectedType = null;
