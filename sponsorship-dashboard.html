@@ -671,8 +671,8 @@
 <div class="changes-banner">
   <h3>Recent Changes — Nov 2, 2026</h3>
   <ul>
-    <li><strong>Eps 184, 185, 186</strong> now aired — titles updated ("Conner Mantz Returns to New York After Record-Breaking Year"; "How the 2026 TCS New York City Marathon Champs Conquered the Course")</li>
-    <li><strong>Eps 188, 190, 192</strong> titles updated</li>
+    <li><strong>Ep 190</strong> now Scheduled (Finalized) — title is now "TAG Heuer -Replay (no record/edit this week)"</li>
+    <li><strong>Ep 191</strong> title is now "Charity 4 - Team in Training"</li>
   </ul>
 </div>
 
@@ -797,8 +797,8 @@ const episodes = [
   {ep:187,status:'scheduled',format:'',record:'2026-11-03',air:'2026-11-05',title:'Post Marathon with three Team Inspire runners',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'Danish Hussain Yar Alan Kaufman (tentative) Nicole Ver Kuilen',sponsors:['Peloton','Shake Shack','Culligan']},
   {ep:188,status:'scheduled',format:'',record:'2026-11-10',air:'2026-11-12',title:'Niki Hiltz doc episode',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','Volvo','Snyders']},
   {ep:189,status:'scheduled',format:'',record:'2026-11-17',air:'2026-11-19',title:'Theresa Krug - The Fastest Girl in Somalia',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','Volvo']},
-  {ep:190,status:'upcoming',format:'',record:'2026-11-24',air:'2026-11-26',title:'Charity 4 - Team in Training',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
-  {ep:191,status:'scheduled',format:'',record:'2026-12-01',air:'2026-12-03',title:'Tag Heuer - Replay',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:190,status:'scheduled',format:'',record:'2026-11-24',air:'2026-11-26',title:'TAG Heuer -Replay (no record/edit this week)',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
+  {ep:191,status:'scheduled',format:'',record:'2026-12-01',air:'2026-12-03',title:'Charity 4 - Team in Training',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
   {ep:192,status:'upcoming',format:'',record:'2026-12-08',air:'2026-12-10',title:'STU NYRR members',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
   {ep:193,status:'upcoming',format:'',record:'2026-12-15',air:'2026-12-17',title:'TBD',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton','Volvo']},
   {ep:194,status:'upcoming',format:'',record:'2026-12-22',air:'2026-12-24',title:'Tanners\' 2001 marathon planning video -audio version',desc:'[INSERT DESCRIPTION]  FOLLOW NYRR: Instagram | Facebook | X | TikTok | YouTube SUPPORT: Support the Set the Pace podcast! If you enjoy the show, please subscribe and leave a rating and review on Apple Podcasts or Spotify.  DISCLAIMER',guest:'',sponsors:['Peloton']},
@@ -1147,8 +1147,8 @@ const CAL_INITIAL_EPISODES = [
   { id: 536, date: "2026-11-05", title: "Post Marathon with three Team Inspire runners", type: "Single Story" },
   { id: 537, date: "2026-11-12", title: "Niki Hiltz doc episode", type: "EYNTK/STU" },
   { id: 538, date: "2026-11-19", title: "Theresa Krug - The Fastest Girl in Somalia", type: "Single Story" },
-  { id: 539, date: "2026-11-26", title: "Charity 4 - Team in Training", type: "Single Story" },
-  { id: 540, date: "2026-12-03", title: "Tag Heuer - Replay", type: "Single Story" },
+  { id: 539, date: "2026-11-26", title: "TAG Heuer -Replay (no record/edit this week)", type: "Single Story" },
+  { id: 540, date: "2026-12-03", title: "Charity 4 - Team in Training", type: "Single Story" },
   { id: 541, date: "2026-12-10", title: "STU NYRR members", type: "Single Story" },
   { id: 542, date: "2026-12-17", title: "TBD", type: "Single Story" },
   { id: 543, date: "2026-12-24", title: "Tanners' 2001 marathon planning video -audio version", type: "Single Story" },
@@ -1158,7 +1158,7 @@ const CAL_INITIAL_EPISODES = [
 // Calendar state — load from localStorage if available, otherwise use defaults
 // DATA_VERSION must be bumped each time CAL_INITIAL_EPISODES is updated so the
 // browser discards its stale localStorage cache automatically.
-const CAL_DATA_VERSION = 29;
+const CAL_DATA_VERSION = 30;
 const STORAGE_KEY = 'stp_calendar_episodes';
 const VERSION_KEY = 'stp_calendar_version';
 let calEpisodes;
